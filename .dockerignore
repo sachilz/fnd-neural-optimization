@@ -1,0 +1,12 @@
+.git
+.venv
+venv
+node_modules
+__pycache__
+*.pyc
+.ipynb_checkpoints
+notebooks/archive
+data/raw
+data/archive_previous
+frontend/dist
+.DS_Store
