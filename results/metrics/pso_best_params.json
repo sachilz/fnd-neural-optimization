@@ -1,0 +1,6 @@
+{
+  "hidden_dim": 89,
+  "learning_rate": 0.0020676005606467943,
+  "dropout_rate": 0.3717036293813635,
+  "best_val_accuracy": 0.9892863314325212
+}
