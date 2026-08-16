@@ -14,7 +14,6 @@ from data.dataset import SparseTFIDFDataset
 from models.baseline import FakeNewsMLP
 from models.train import train_model
 from evaluation.metrics import evaluate_model
-
 def get_predictions(model, loader, device):
     model.eval()
     all_preds = []
@@ -39,11 +38,14 @@ def main():
     data_dir = os.path.join(base_dir, 'data', 'processed')
     results_dir = os.path.join(base_dir, 'results')
     models_dir = os.path.join(base_dir, 'models')
-    os.makedirs(models_dir, exist_ok=True)
     
     # Load dataset metadata
     with open(os.path.join(data_dir, 'preprocessing_metadata.json'), 'r') as f:
         meta = json.load(f)
+        
+    # Load PSO best params
+    with open(os.path.join(results_dir, 'metrics', 'pso_best_params.json'), 'r') as f:
+        best_params = json.load(f)
         
     input_dim = meta['max_features']
     
@@ -60,51 +62,58 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
     
-    model = FakeNewsMLP(input_dim=input_dim, hidden_dim=128, dropout_rate=0.5)
+    print(f"Training Optimized Model with parameters: {best_params}")
+    model = FakeNewsMLP(
+        input_dim=input_dim, 
+        hidden_dim=best_params['hidden_dim'], 
+        dropout_rate=best_params['dropout_rate']
+    )
     
-    print("Training Baseline Model...")
     model, history, train_time = train_model(
         model, train_loader, val_loader, 
-        epochs=10, lr=0.001, device=device
+        epochs=10, 
+        lr=best_params['learning_rate'], 
+        device=device
     )
     
     # Save model
-    model_path = os.path.join(models_dir, 'baseline_mlp.pth')
+    model_path = os.path.join(models_dir, 'optimized_mlp.pth')
     torch.save(model.state_dict(), model_path)
-    print(f"Model saved to {model_path}")
+    print(f"Optimized model saved to {model_path}")
     
     # Evaluate on Validation Set
-    print("\nEvaluating on Validation Set...")
+    print("\nEvaluating Optimized Model on Validation Set...")
     val_true, val_pred, val_prob = get_predictions(model, val_loader, device)
     val_metrics = evaluate_model(
         val_true, val_pred, val_prob, 
         output_dir=os.path.join(results_dir, 'figures', 'evaluation'),
-        prefix="baseline_val"
+        prefix="optimized_val"
     )
     
     # Evaluate on Test Set
-    print("Evaluating on Test Set...")
+    print("Evaluating Optimized Model on Test Set...")
     test_true, test_pred, test_prob = get_predictions(model, test_loader, device)
     test_metrics = evaluate_model(
         test_true, test_pred, test_prob, 
         output_dir=os.path.join(results_dir, 'figures', 'evaluation'),
-        prefix="baseline_test"
+        prefix="optimized_test"
     )
     
     # Save metrics
     results = {
         'training_time_seconds': float(train_time),
+        'hyperparameters': best_params,
         'history': history,
         'validation_metrics': val_metrics,
         'test_metrics': test_metrics
     }
     
-    metrics_path = os.path.join(results_dir, 'metrics', 'baseline_metrics.json')
+    metrics_path = os.path.join(results_dir, 'metrics', 'optimized_metrics.json')
     with open(metrics_path, 'w') as f:
         json.dump(results, f, indent=2)
         
-    print(f"Results saved to {metrics_path}")
-    print("\nBaseline Test Accuracy:", test_metrics['accuracy'])
+    print(f"Optimized Results saved to {metrics_path}")
+    print(f"\nOptimized Test Accuracy: {test_metrics['accuracy']:.4f}")
 
 if __name__ == '__main__':
     main()
