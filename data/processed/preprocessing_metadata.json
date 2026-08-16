@@ -1,0 +1,69 @@
+{
+  "random_seed": 42,
+  "original_fake_rows": 23481,
+  "original_true_rows": 21417,
+  "original_total_rows": 44898,
+  "original_empty_text": 631,
+  "empty_text_removed": 716,
+  "total_rows": 44182,
+  "exact_duplicate_count": 5600,
+  "conflicting_label_count": 0,
+  "unique_texts": 38582,
+  "duplicate_texts": 5110,
+  "final_total_rows": 38582,
+  "final_fake_rows": 17393,
+  "final_true_rows": 21189,
+  "final_empty_text": 0,
+  "train_size": 27007,
+  "val_size": 5787,
+  "test_size": 5788,
+  "train_class_dist": {
+    "1": 0.5491909504943163,
+    "0": 0.45080904950568373
+  },
+  "val_class_dist": {
+    "1": 0.5491619146362536,
+    "0": 0.4508380853637463
+  },
+  "test_class_dist": {
+    "1": 0.5492398064961991,
+    "0": 0.450760193503801
+  },
+  "overlap_train_val": 0,
+  "overlap_train_test": 0,
+  "overlap_val_test": 0,
+  "total_overlap": 0,
+  "X_train_shape": [
+    27007,
+    5000
+  ],
+  "X_val_shape": [
+    5787,
+    5000
+  ],
+  "X_test_shape": [
+    5788,
+    5000
+  ],
+  "vocabulary_size": 5000,
+  "max_features": 5000,
+  "ngram_range": [
+    1,
+    2
+  ],
+  "train_non_zero": 3292225,
+  "val_non_zero": 704891,
+  "test_non_zero": 689982,
+  "train_density": 0.024380530973451327,
+  "val_density": 0.024361188871608777,
+  "test_density": 0.023841810642709054,
+  "output_files": {
+    "X_train": "/home/chamod/Projects/fake-news-pso-detection/data/processed/X_train.npz",
+    "X_val": "/home/chamod/Projects/fake-news-pso-detection/data/processed/X_val.npz",
+    "X_test": "/home/chamod/Projects/fake-news-pso-detection/data/processed/X_test.npz",
+    "y_train": "/home/chamod/Projects/fake-news-pso-detection/data/processed/y_train.npy",
+    "y_val": "/home/chamod/Projects/fake-news-pso-detection/data/processed/y_val.npy",
+    "y_test": "/home/chamod/Projects/fake-news-pso-detection/data/processed/y_test.npy",
+    "tfidf_vectorizer": "/home/chamod/Projects/fake-news-pso-detection/data/processed/tfidf_vectorizer.pkl"
+  }
+}
