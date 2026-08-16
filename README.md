@@ -127,11 +127,11 @@ docker compose up --build
 If you are developing natively on Windows without Docker:
 
 1. Clone the GitHub repository.
-2. Install Python 3.12.
+2. Install Python (3.10+ recommended).
 3. Install Node.js LTS.
 4. Open PowerShell and create the environment:
    ```powershell
-   py -3.12 -m venv .venv
+   py -m venv .venv
    ```
 5. Install Python dependencies:
    ```powershell
@@ -147,7 +147,7 @@ If you are developing natively on Windows without Docker:
    ```powershell
    .\start.ps1
    ```
-*(If PowerShell blocks the script, run `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned` to safely allow local scripts.)*
+*(If PowerShell blocks the script, or if you are using Command Prompt (`cmd`), run `powershell -ExecutionPolicy Bypass -File .\start.ps1` to safely execute the script.)*
 
 ---
 

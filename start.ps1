@@ -21,7 +21,7 @@ $UVICORN_EXE = Join-Path $VENV_PATH "Scripts\uvicorn.exe"
 if (-Not (Test-Path $VENV_PATH)) {
     Write-Host "ERROR: Python virtual environment not found at $VENV_PATH" -ForegroundColor Red
     Write-Host "Please create it and install requirements:"
-    Write-Host "  py -3.12 -m venv .venv"
+    Write-Host "  py -m venv .venv"
     Write-Host "  .\.venv\Scripts\python.exe -m pip install --upgrade pip"
     Write-Host "  .\.venv\Scripts\python.exe -m pip install -r requirements.txt"
     exit 1
