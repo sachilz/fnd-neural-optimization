@@ -6,6 +6,18 @@ This project delivers a full end-to-end pipeline: from dataset preprocessing and
 
 ---
 
+## 🧪 Quick Test Articles
+
+Since the model is trained on a specific Kaggle dataset consisting primarily of **US political news from 2016-2017**, it performs best on in-distribution text. Try copy-pasting the following excerpts into the Web UI or CLI demo to see it in action:
+
+**✅ REAL NEWS (US Politics)**
+> WASHINGTON (Reuters) - The U.S. Senate on Thursday overwhelmingly passed a sweeping $700 billion defense policy bill that backs President Donald Trump’s call for a bigger, stronger military but sets the stage for a battle over government spending later this year.
+
+**❌ FAKE NEWS (US Politics)**
+> Donald Trump just gave a bizarre speech to the Boy Scouts of America, and it was a complete disaster. He ranted about fake news, attacked Obama, and completely ignored the values of the organization. Parents are furious and demanding an apology from the White House.
+
+---
+
 ## Project Overview
 
 The project flows from raw news text to a deployed web interface, ensuring academic rigor and strict train/test isolation at every phase.
@@ -99,7 +111,7 @@ The FND Web Application is a premium, interactive user experience optimized for 
 ### Windows PowerShell
 
 ```powershell
-.\start.ps1
+powershell -ExecutionPolicy Bypass -File .\start.ps1
 ```
 
 ### Docker
