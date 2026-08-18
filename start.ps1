@@ -122,6 +122,15 @@ if (-Not $backendReady) {
 $frontendDir = Join-Path $DIR "frontend"
 $npmCommand = Get-Command "npm" | Select-Object -ExpandProperty Source
 
+if (-Not (Test-Path (Join-Path $frontendDir "node_modules"))) {
+    Write-Host "Installing frontend dependencies... (this might take a minute)"
+    $installProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c npm install" -WorkingDirectory $frontendDir -Wait -NoNewWindow -PassThru
+    if ($installProcess.ExitCode -ne 0) {
+        Write-Host "ERROR: Failed to install frontend dependencies." -ForegroundColor Red
+        exit 1
+    }
+}
+
 $frontendProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
 $frontendProcessInfo.FileName = "cmd.exe"
 $frontendProcessInfo.Arguments = "/c npm run dev"
