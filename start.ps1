@@ -45,9 +45,9 @@ if (-Not (Get-Command "npm" -ErrorAction SilentlyContinue)) {
 }
 
 # 4. Verify ports
-$port8000 = Get-NetTCPConnection -LocalPort 8000 -State Listen -ErrorAction SilentlyContinue
-if ($port8000) {
-    Write-Host "ERROR: Port 8000 is currently occupied. Please free this port for the backend." -ForegroundColor Red
+$port8888 = Get-NetTCPConnection -LocalPort 8888 -State Listen -ErrorAction SilentlyContinue
+if ($port8888) {
+    Write-Host "ERROR: Port 8888 is currently occupied. Please free this port for the backend." -ForegroundColor Red
     exit 1
 }
 
@@ -71,7 +71,7 @@ Write-Host "Starting FND services... (Logs saved to .runtime/)"
 # Start Backend
 $backendProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
 $backendProcessInfo.FileName = $PYTHON_EXE
-$backendProcessInfo.Arguments = "-m uvicorn backend.app:app --host 0.0.0.0 --port 8000 --app-dir `"$DIR`""
+$backendProcessInfo.Arguments = "-m uvicorn backend.app:app --host 0.0.0.0 --port 8888 --app-dir `"$DIR`""
 $backendProcessInfo.RedirectStandardOutput = $true
 $backendProcessInfo.RedirectStandardError = $true
 $backendProcessInfo.UseShellExecute = $false
@@ -93,7 +93,7 @@ Write-Host -NoNewline "Waiting for backend..."
 $backendReady = $false
 for ($i = 0; $i -lt 30; $i++) {
     try {
-        $response = Invoke-RestMethod -Uri "http://localhost:8000/health" -Method Get -ErrorAction Stop
+        $response = Invoke-RestMethod -Uri "http://localhost:8888/health" -Method Get -ErrorAction Stop
         if ($response.status -eq "ok") {
             $backendReady = $true
             break
@@ -191,10 +191,10 @@ Write-Host "Web UI:" -ForegroundColor White
 Write-Host "http://localhost:5173" -ForegroundColor Blue
 Write-Host ""
 Write-Host "API:" -ForegroundColor White
-Write-Host "http://localhost:8000" -ForegroundColor Blue
+Write-Host "http://localhost:8888" -ForegroundColor Blue
 Write-Host ""
 Write-Host "Health:" -ForegroundColor White
-Write-Host "http://localhost:8000/health" -ForegroundColor Blue
+Write-Host "http://localhost:8888/health" -ForegroundColor Blue
 Write-Host ""
 Write-Host "Press Ctrl+C to stop." -ForegroundColor Yellow
 

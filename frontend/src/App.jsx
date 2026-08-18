@@ -47,9 +47,15 @@ function App() {
 
   const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length;
 
-  const handleAnalyze = async () => {
+  const handleAnalyze = async (overrideModel = null) => {
+    // If the event object is passed, ignore it
+    const isEvent = overrideModel && typeof overrideModel === 'object' && overrideModel.nativeEvent;
+    const currentModel = (overrideModel && !isEvent) ? overrideModel : model;
+
     if (!text.trim()) {
-      setError("Please enter a meaningful news article.");
+      if (!currentModel || isEvent) {
+        setError("Please enter a meaningful news article.");
+      }
       return;
     }
 
@@ -63,10 +69,10 @@ function App() {
       analysisSection.scrollIntoView({ behavior: 'smooth' });
     }
 
-    const apiUrl = import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : 'http://localhost:8000';
+    const apiUrl = import.meta.env.VITE_API_URL !== undefined ? import.meta.env.VITE_API_URL : 'http://localhost:8888';
 
     try {
-      if (model === 'compare') {
+      if (currentModel === 'compare') {
         const [resBase, resPso] = await Promise.all([
           fetch(`${apiUrl}/api/predict`, {
             method: 'POST',
@@ -99,7 +105,7 @@ function App() {
         const response = await fetch(`${apiUrl}/api/predict`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text, model_choice: model })
+          body: JSON.stringify({ text, model_choice: currentModel })
         });
         
         const data = await response.json();
@@ -112,6 +118,13 @@ function App() {
       setError(err.message);
     } finally {
       setIsAnalyzing(false);
+    }
+  };
+
+  const handleModelSelect = (selectedModel) => {
+    setModel(selectedModel);
+    if (text.trim() && !isAnalyzing) {
+      handleAnalyze(selectedModel);
     }
   };
 
@@ -214,21 +227,21 @@ function App() {
               <button 
                 className={`mono-text ${model === '1' ? 'active-tab' : ''}`}
                 style={{ padding: '0.5rem 1rem', border: `1px solid ${model === '1' ? 'var(--text-main)' : 'var(--text-dim)'}`, color: model === '1' ? 'var(--bg-main)' : 'var(--text-main)', background: model === '1' ? 'var(--text-main)' : 'transparent', borderRadius: '100px', cursor: 'pointer' }}
-                onClick={() => setModel('1')}
+                onClick={() => handleModelSelect('1')}
               >
                 BASELINE
               </button>
               <button 
                 className={`mono-text ${model === '2' ? 'active-tab' : ''}`}
                 style={{ padding: '0.5rem 1rem', border: `1px solid ${model === '2' ? 'var(--text-main)' : 'var(--text-dim)'}`, color: model === '2' ? 'var(--bg-main)' : 'var(--text-main)', background: model === '2' ? 'var(--text-main)' : 'transparent', borderRadius: '100px', cursor: 'pointer' }}
-                onClick={() => setModel('2')}
+                onClick={() => handleModelSelect('2')}
               >
                 PSO OPTIMIZED
               </button>
               <button 
                 className={`mono-text ${model === 'compare' ? 'active-tab' : ''}`}
                 style={{ padding: '0.5rem 1rem', border: `1px solid ${model === 'compare' ? 'var(--text-main)' : 'var(--text-dim)'}`, color: model === 'compare' ? 'var(--bg-main)' : 'var(--text-main)', background: model === 'compare' ? 'var(--text-main)' : 'transparent', borderRadius: '100px', cursor: 'pointer' }}
-                onClick={() => setModel('compare')}
+                onClick={() => handleModelSelect('compare')}
               >
                 COMPARE
               </button>
@@ -248,7 +261,7 @@ function App() {
               </div>
               <div style={{ display: 'flex', gap: '1rem' }}>
                 <button onClick={handleClear} disabled={isAnalyzing || !text} style={{ color: 'var(--text-secondary)', cursor: 'pointer', background: 'none', border: 'none', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem' }}>CLEAR</button>
-                <button className="minimal-btn" onClick={handleAnalyze} disabled={isAnalyzing || !text.trim()}>
+                <button className="minimal-btn" onClick={() => handleAnalyze()} disabled={isAnalyzing || !text.trim()}>
                   {isAnalyzing ? 'ANALYZING...' : 'ANALYZE →'}
                 </button>
               </div>

@@ -1,0 +1,8 @@
+{
+  "venvPath": "c:\\Users\\sachintha\\Desktop\\fnd-neural-optimization",
+  "venv": ".venv",
+  "extraPaths": [
+    "src",
+    "backend"
+  ]
+}

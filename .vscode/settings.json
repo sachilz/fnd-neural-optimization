@@ -1,3 +1,12 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:system"
+    "python.defaultInterpreterPath": "c:\\Users\\sachintha\\Desktop\\fnd-neural-optimization\\.venv\\Scripts\\python.exe",
+    "python.pythonPath": "c:\\Users\\sachintha\\Desktop\\fnd-neural-optimization\\.venv\\Scripts\\python.exe",
+    "python.venvPath": "c:\\Users\\sachintha\\Desktop\\fnd-neural-optimization",
+    "python.venvFolders": [
+        ".venv"
+    ],
+    "python.analysis.extraPaths": [
+        "c:\\Users\\sachintha\\Desktop\\fnd-neural-optimization\\src",
+        "c:\\Users\\sachintha\\Desktop\\fnd-neural-optimization\\backend"
+    ]
 }
