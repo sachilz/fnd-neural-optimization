@@ -168,9 +168,13 @@ If you are developing natively on Windows without Docker:
 The core ML inference pipeline can be demonstrated directly from the command line, completely bypassing the Web UI.
 
 ```bash
-cd fake-news-pso-detection
 source .venv/bin/activate
 python scripts/run_inference.py
+```
+
+**Windows PowerShell:**
+```powershell
+.\.venv\Scripts\python.exe scripts\run_inference.py
 ```
 **Workflow:**
 1. You will be prompted to select a model (`1` = Baseline, `2` = PSO Optimized).

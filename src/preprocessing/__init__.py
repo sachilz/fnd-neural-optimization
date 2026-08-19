@@ -1,2 +1,2 @@
-# Preprocessing package for fake-news-pso-detection
+# Preprocessing package for fnd-neural-optimization
 # Provides reusable data cleaning, TF-IDF vectorization, and train/validation/test splitting.
